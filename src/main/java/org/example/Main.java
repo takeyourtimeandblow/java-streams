@@ -6,14 +6,18 @@ import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.*;
+import java.util.List;
+import java.util.Set;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        ////////////////////////////
+        //Parsing by java
         Gson gson = new Gson();
 
         File input = new File("books.json");
@@ -53,17 +57,15 @@ public class Main {
         if (hasJaneAustenBooks)
             System.out.println("Has");
         else System.out.println("Has not");
-        //5
-        int maxCount;
-        int temp = 0;
-        for (Person person : people) {
-            if (person.getFavoriteBooks().size() > temp) {
-                temp = person.getFavoriteBooks().size();
-            }
-        }
-        maxCount = temp;
 
-        System.out.println(maxCount);
+        //5
+        int maxFavoriteBooks = people.stream()
+                .mapToInt(e -> e.getFavoriteBooks().size())
+                .max()
+                .orElse(0);
+
+        System.out.println(maxFavoriteBooks);
+
         //6
         List<SMS> smsMessages = new ArrayList<>();
         double averageFavorites = people.stream()
@@ -85,6 +87,8 @@ public class Main {
                     }
                     smsMessages.add(new SMS(e.getPhone(), message));
                 });
-        smsMessages.forEach(sms -> System.out.println("SMS to " + sms.getPhone() + ": " + sms.getMessage()));
+        smsMessages.forEach(sms ->
+                System.out.println("SMS to " + sms.getPhone() + ": " + sms.getMessage())
+        );
     }
 }
